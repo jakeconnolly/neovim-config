@@ -14,6 +14,9 @@ return {
     -- Creates a beautiful debugger UI
     'rcarriga/nvim-dap-ui',
 
+    -- Show variable values in dap
+    'theHamsta/nvim-dap-virtual-text',
+
     -- Required dependency for nvim-dap-ui
     'nvim-neotest/nvim-nio',
 
@@ -83,6 +86,12 @@ return {
           disconnect = '⏏',
         },
       },
+    }
+
+    -- Setup inline virtual text
+    require('nvim-dap-virtual-text').setup {
+      -- virt_text_pos = 'eol',
+      virt_text_win_col = 120,
     }
 
     -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
