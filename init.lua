@@ -555,7 +555,7 @@ require('lazy').setup({
           --
           -- This may be unwanted, since they displace some of your code
           if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-            map('<leader>th', function()
+            map('<leader>dh', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
             end, '[T]oggle Inlay [H]ints')
           end
@@ -798,25 +798,25 @@ require('lazy').setup({
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
-    -- init = function()
-    -- Load the colorscheme here.
-    -- Like many other themes, this one has different styles, and you could load
-    -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-    -- vim.cmd.colorscheme 'tokyonight-night'
+    init = function()
+      -- Load the colorscheme here.
+      -- Like many other themes, this one has different styles, and you could load
+      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+      vim.cmd.colorscheme 'tokyonight-night'
 
-    -- You can configure highlights by doing something like:
-    -- vim.cmd.hi 'Comment gui=none'
-    -- end,
+      -- You can configure highlights by doing something like:
+      vim.cmd.hi 'Comment gui=none'
+    end,
   },
   -- Additional colorschemes
   { 'rafamadriz/neon', priority = 1000 },
   {
     'Mofiqul/vscode.nvim',
-    priority = 1000,
-    init = function()
-      vim.cmd.colorscheme 'vscode'
-      vim.cmd.hi 'Comment gui=none'
-    end,
+    -- priority = 1000,
+    -- init = function()
+    --   vim.cmd.colorscheme 'vscode'
+    --   vim.cmd.hi 'Comment gui=none'
+    -- end,
   },
   { 'sainnhe/sonokai', priority = 1000 },
   { 'ray-x/aurora', priority = 1000 },
@@ -866,7 +866,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'python' },
+      ensure_installed = { 'bash', 'c', 'cpp', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'python' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -898,7 +898,7 @@ require('lazy').setup({
     'cbochs/grapple.nvim',
     opts = {
       scope = 'git', -- also try out "git_branch"
-      icons = false, -- setting to "true" requires "nvim-web-devicons"
+      icons = true, -- setting to "true" requires "nvim-web-devicons"
       status = false,
     },
     keys = {
