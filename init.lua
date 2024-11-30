@@ -133,6 +133,7 @@ vim.opt.updatetime = 250
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
+vim.opt.timeout = false
 vim.opt.timeoutlen = 300
 
 -- Configure how new splits should be opened
@@ -299,7 +300,7 @@ require('lazy').setup({
       { '<leader>r', group = '[R]ename' },
       { '<leader>r_', hidden = true },
       { '<leader>s', group = '[S]earch' },
-      { '<leader>s_', hidden = true },
+      { '<leader>s_', hidden = false },
       { '<leader>t', group = '[T]est' },
       { '<leader>t_', hidden = true },
       { '<leader>w', group = '[W]orkspace' },
@@ -394,7 +395,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-      vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+      -- vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<leader>sc', builtin.colorscheme, { desc = '[S]earch [C]olorscheme' })
 
