@@ -309,6 +309,43 @@ require('lazy').setup({
     },
   },
 
+  {
+    'rmagatti/auto-session',
+    keys = {
+      -- Will use Telescope if installed or a vim.ui.select picker otherwise
+      { '<leader>ws', '<cmd>SessionSearch<CR>', desc = 'Session search' },
+      { '<leader>ww', '<cmd>SessionSave<CR>', desc = 'Write session' },
+      { '<leader>wa', '<cmd>SessionToggleAutoSave<CR>', desc = 'Toggle autosave' },
+    },
+    ---enables autocomplete for opts
+    ---@module "auto-session"
+    ---@type AutoSession.Config
+    opts = {
+      -- ⚠️ This will only work if Telescope.nvim is installed
+      -- The following are already the default values, no need to provide them if these are already the settings you want.
+      session_lens = {
+        -- If load_on_setup is false, make sure you use `:SessionSearch` to open the picker as it will initialize everything first
+        load_on_setup = true,
+        previewer = false,
+        mappings = {
+          -- Mode can be a string or a table, e.g. {"i", "n"} for both insert and normal mode
+          delete_session = { 'i', '<C-D>' },
+          alternate_session = { 'i', '<C-S>' },
+          copy_session = { 'i', '<C-Y>' },
+        },
+        -- Can also set some Telescope picker options
+        -- For all options, see: https://github.com/nvim-telescope/telescope.nvim/blob/master/doc/telescope.txt#L112
+        theme_conf = {
+          border = true,
+          -- layout_config = {
+          --   width = 0.8, -- Can set width and height as percent of window
+          --   height = 0.5,
+          -- },
+        },
+      },
+    },
+  },
+
   -- NOTE: Plugins can specify dependencies.
   --
   -- The dependencies are proper plugin specifications as well - anything
@@ -390,7 +427,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
+      vim.keymap.set('n', '<leader>st', builtin.builtin, { desc = '[S]earch Select [T]elescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
@@ -505,7 +542,7 @@ require('lazy').setup({
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('<leader>ss', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[S]earch workspace [S]ymbols')
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
@@ -584,7 +621,11 @@ require('lazy').setup({
         clangd = {},
         -- gopls = {},
         basedpyright = {},
-        -- rust_analyzer = {},
+        -- rust_analyzer = {
+        --   rust_analyzer = function()
+        --     return true
+        --   end,
+        -- },
         lemminx = {},
         -- jsonls = {},
         -- tsserver = {},
@@ -627,9 +668,13 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        -- 'rust-analyzer',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+      require('mason-lspconfig').setup_handlers {
+        ['rust_analyzer'] = function() end,
+      }
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
@@ -643,6 +688,13 @@ require('lazy').setup({
         },
       }
     end,
+  },
+
+  -- Rust specific plugin
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^5', -- Recommended
+    lazy = false, -- This plugin is already lazy
   },
 
   { -- Autoformat
@@ -985,6 +1037,5 @@ require('lazy').setup({
     },
   },
 })
-
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
