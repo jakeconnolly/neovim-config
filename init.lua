@@ -621,11 +621,13 @@ require('lazy').setup({
         clangd = {},
         -- gopls = {},
         basedpyright = {},
+        black = {},
         -- rust_analyzer = {
         --   rust_analyzer = function()
         --     return true
         --   end,
         -- },
+        rust_analyzer = {},
         lemminx = {},
         -- jsonls = {},
         -- tsserver = {},
@@ -672,9 +674,9 @@ require('lazy').setup({
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      require('mason-lspconfig').setup_handlers {
-        ['rust_analyzer'] = function() end,
-      }
+      -- require('mason-lspconfig').setup_handlers {
+      --   ['rust_analyzer'] = function() end,
+      -- }
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
@@ -691,11 +693,11 @@ require('lazy').setup({
   },
 
   -- Rust specific plugin
-  {
-    'mrcjkb/rustaceanvim',
-    version = '^5', -- Recommended
-    lazy = false, -- This plugin is already lazy
-  },
+  -- {
+  --   'mrcjkb/rustaceanvim',
+  --   version = '^5', -- Recommended
+  --   lazy = false, -- This plugin is already lazy
+  -- },
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -716,7 +718,10 @@ require('lazy').setup({
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = { c = true, cpp = true, python = true }
+        if disable_filetypes[vim.bo[bufnr].filetype] then
+          return
+        end
         return {
           timeout_ms = 500,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
@@ -724,6 +729,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        python = { 'black' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
